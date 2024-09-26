@@ -4,7 +4,7 @@ export class CardGameScene extends Phaser.Scene {
     }
 
     cardSize = {w: 150, h: 175}
-    maxLife = 3
+    maxLife = 2;
 
     // Update the text when the player's life changes (optional example)
     update() {
@@ -16,7 +16,7 @@ export class CardGameScene extends Phaser.Scene {
 
         this.player = {
             interactable: true,
-            life: 3,
+            life: this.maxLife,
             hand: [],
             pool: [],
             board: [],
@@ -27,7 +27,7 @@ export class CardGameScene extends Phaser.Scene {
 
         this.enemy = {
             interactable: false,
-            life: 3,
+            life: this.maxLife,
             hand: [],
             pool: [],
             board: [],
@@ -214,9 +214,11 @@ export class CardGameScene extends Phaser.Scene {
 
             if (this.player.life <= 0) {
                 console.log('player dies...')
+                this.scene.start('GameOver', {winner: "Enemy"});
             }
             if (this.enemy.life <= 0) {
                 console.log('enemy dies...')
+                this.scene.start('GameOver', {winner: "Player"});
             }
 
             this.discardHand(this.player)
