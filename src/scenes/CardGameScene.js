@@ -1,6 +1,19 @@
+import {devs} from '../data/devs'; // Import the devs constant
+import {CardFace} from '../objects/CardFace'; // Import the Card class
+
 export class CardGameScene extends Phaser.Scene {
+
+
     constructor() {
         super({key: 'CardGameScene'});
+    }
+
+    preload() {
+        devs.forEach(dev => {
+            this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
+        });
+        this.load.image('bild', 'assets/dev_img.png')
+        this.load.image('card_bk', 'assets/card_bk.png')
     }
 
     cardSize = {w: 150, h: 175}
@@ -8,8 +21,8 @@ export class CardGameScene extends Phaser.Scene {
 
     // Update the text when the player's life changes (optional example)
     update() {
-        this.playerLifeText.setText(`Life: ${this.player.life} / ${this.maxLife}`);
-        this.enemyLifeText.setText(`Life: ${this.enemy.life} / ${this.maxLife}`);
+        this.playerLifeText.setText(`${this.player.life}/${this.maxLife}`);
+        this.enemyLifeText.setText(`${this.enemy.life}/${this.maxLife}`);
     }
 
     create() {
@@ -21,7 +34,7 @@ export class CardGameScene extends Phaser.Scene {
             pool: [],
             board: [],
             discard: [],
-            handArea: {x: 0, y: this.scale.height - 150, height: 150},
+            handArea: {x: 0, y: this.scale.height - 150, height: 150, cardYOffset: 0 },
             cardArea: {x: 0, y: this.scale.height - 350, height: 150}
         }
 
@@ -32,12 +45,12 @@ export class CardGameScene extends Phaser.Scene {
             pool: [],
             board: [],
             discard: [],
-            handArea: {x: 0, y: 0, height: 150},
+            handArea: {x: 0, y: 0, height: 150, cardYOffset: 150},
             cardArea: {x: 0, y: 200, height: 150}
         }
 
         // Create a text object to display the player's life
-        this.playerLifeText = this.add.text(0, this.player.handArea.y - 45, `Life: ${this.player.life} / ${this.maxLife}`, {
+        this.playerLifeText = this.add.text(this.scale.width - 75, this.player.handArea.y + 100, `${this.player.life}/${this.maxLife}`, {
             fontSize: '32px',
             fill: '#090808'
         });
@@ -46,7 +59,7 @@ export class CardGameScene extends Phaser.Scene {
         this.playerLifeText.setDepth(100);
 
         // Create a text object to display the player's life
-        this.enemyLifeText = this.add.text(0, this.enemy.handArea.y + 150, `Life: ${this.player.life} / ${this.maxLife}`, {
+        this.enemyLifeText = this.add.text(this.scale.width - 75, this.enemy.handArea.y + 5, `${this.player.life}/${this.maxLife}`, {
             fontSize: '32px',
             fill: '#090808'
         });
@@ -56,26 +69,33 @@ export class CardGameScene extends Phaser.Scene {
 
         this.drawBoard()
 
-        // Fill pool with some cards
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < devs.length; i++) {
+            const dev = devs[i];
+            // console.log(dev)
             this.player.pool.push({
                 id: i,
                 color: Phaser.Display.Color.RandomRGB(),
+                cardData: dev,
                 damage: Math.floor(Math.random() * 10) + 1
             });
             this.enemy.pool.push({
                 id: i,
                 color: Phaser.Display.Color.RandomRGB(),
+                cardData: dev,
                 damage: Math.floor(Math.random() * 10) + 1
             });
         }
+
+        this.player.pool = shuffleArray(this.player.pool);
+        this.enemy.pool = shuffleArray(this.enemy.pool);
+
 
         // Draw initial hand of 5 cards
         this.drawCards(5);
 
         // Add Drag Events
         this.input.on('dragstart', (pointer, gameObject) => {
-            gameObject.list[0].setFillStyle(0x00ff00); // Change color instead of using setTint
+            // gameObject.list[0].setFillStyle(0x00ff00); // Change color instead of using setTint
             gameObject.oldX = gameObject.x;
             gameObject.oldY = gameObject.y;
         });
@@ -86,7 +106,7 @@ export class CardGameScene extends Phaser.Scene {
         });
 
         this.input.on('dragend', (pointer, gameObject) => {
-            gameObject.list[0].setFillStyle(0xffffff); // Reset to original color
+            // gameObject.list[0].setFillStyle(0xffffff); // Reset to original color
 
             console.log(`${pointer.x}, ${pointer.y}`);
 
@@ -144,8 +164,17 @@ export class CardGameScene extends Phaser.Scene {
 
     addCardToHand(owner) {
         const card = owner.pool.pop();
-        const container = this.add.container(100 + owner.hand.length * 160, owner.handArea.y + 100);
-        const cardObject = this.add.rectangle(0, 0, this.cardSize.w, this.cardSize.h, card.color.color);
+        console.log(card)
+        // const container = this.add.container(100 + owner.hand.length * 160, owner.handArea.y + 100);
+        const container = new CardFace(this, 100 + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData);
+
+        // let cardObject = {}
+        // if (card.cardData) {
+        //     cardObject = new CardFace(this, 300 + owner.hand.length * 160, 600, card.cardData);
+        // } else {
+        //     cardObject = this.add.rectangle(0, 0, this.cardSize.w, this.cardSize.h, card.color.color);
+        // }
+
 
         const numberText = this.add.text(0, 0, `${card.damage}`, {
             fontSize: '32px',
@@ -153,7 +182,7 @@ export class CardGameScene extends Phaser.Scene {
             align: 'center'
         });
 
-        container.add(cardObject);
+        // container.add(cardObject);
         container.add(numberText);
         container.setSize(this.cardSize.w, this.cardSize.h);
 
@@ -236,4 +265,12 @@ export class CardGameScene extends Phaser.Scene {
         cardObject.y = this.enemy.cardArea.y + 75;
         this.enemy.board.push(cardObject)
     }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
 }
