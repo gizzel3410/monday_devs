@@ -20,8 +20,8 @@ export class TestGround extends Phaser.Scene {
         enemies.forEach(enemy => {
             this.load.image('enemy_' + enemy.id, 'assets/enemies/' + enemy.id + '.png')
         });
-        this.load.image('bild', 'assets/dev_img.png')
         this.load.image('card_bk', 'assets/card_bk.png')
+        this.load.image('bg', 'assets/bg.png')
     }
 
     create() {
@@ -31,6 +31,9 @@ export class TestGround extends Phaser.Scene {
         this.pool = [];
         this.board = [];
         this.handLimit = 5;  // Set hand limit
+
+        const background = this.add.image(0 ,0, 'bg').setOrigin(0,0)
+        background.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
         // Populate pool with developers' data
         devs.forEach(dev => {
