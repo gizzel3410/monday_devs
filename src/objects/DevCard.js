@@ -26,7 +26,8 @@ export class DevCard extends Phaser.GameObjects.Container {
         const nameText = scene.add.text(0, -this.height / 2 + 20, cardData.fullname, {
             fontSize: '18px',
             fill: '#000',
-            align: 'center'
+            align: 'center',
+            wordWrap: {width: 10},
         });
         nameText.x = -nameText.width / 2;
         this.add(nameText);
