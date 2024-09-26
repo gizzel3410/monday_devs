@@ -10,6 +10,8 @@ export class CardGameScene extends Phaser.Scene {
         super({key: 'CardGameScene'});
     }
 
+    nextDepth = 100
+
     preload() {
         devs.forEach(dev => {
             this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
@@ -17,8 +19,8 @@ export class CardGameScene extends Phaser.Scene {
         enemies.forEach(enemy => {
             this.load.image('enemy_' + enemy.id, 'assets/enemies/' + enemy.id + '.png')
         })
-        this.load.image('bild', 'assets/dev_img.png')
         this.load.image('card_bk', 'assets/card_bk.png')
+        this.load.image('bg', 'assets/bg.png')
     }
 
     cardSize = {w: 150, h: 175}
@@ -31,6 +33,12 @@ export class CardGameScene extends Phaser.Scene {
     }
 
     create() {
+        const background = this.add.image(0, 0, 'bg').setOrigin(0, 0);  // Position at the top-left corner
+        console.log(this.width)
+        console.log(this.sys.game.config.width)
+        console.log(window.innerWidth)
+        background.setDisplaySize(window.innerWidth, window.innerHeight);
+
 
 
 
@@ -109,6 +117,8 @@ export class CardGameScene extends Phaser.Scene {
             // gameObject.list[0].setFillStyle(0x00ff00); // Change color instead of using setTint
             gameObject.oldX = gameObject.x;
             gameObject.oldY = gameObject.y;
+            gameObject.setDepth(this.nextDepth);
+            this.nextDepth++ // Optionally reset depth when dragging ends
         });
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
@@ -138,8 +148,8 @@ export class CardGameScene extends Phaser.Scene {
                 gameObject.y = gameObject.oldY;
             }
 
-
         });
+
     }
 
     drawCards(count) {
@@ -210,19 +220,19 @@ export class CardGameScene extends Phaser.Scene {
 
     drawBoard() {
         let playerHandRect = this.add.graphics();
-        playerHandRect.fillStyle(0x0000ff, 1); // 0x0000ff is the color code for blue, 1 is full opacity
+        playerHandRect.fillStyle(0x0000ff, 0.2); // 0x0000ff is the color code for blue, 1 is full opacity
         playerHandRect.fillRect(this.player.handArea.x, this.player.handArea.y, this.scale.width, this.player.handArea.height);
 
         let playerCardRect = this.add.graphics();
-        playerCardRect.fillStyle(0x3cb371, 1); // 0x0000ff is the color code for blue, 1 is full opacity
+        playerCardRect.fillStyle(0x3cb371, 0.4); // 0x0000ff is the color code for blue, 1 is full opacity
         playerCardRect.fillRect(this.player.cardArea.x, this.player.cardArea.y, this.scale.width, this.player.cardArea.height);
 
         let enemyHandRect = this.add.graphics();
-        enemyHandRect.fillStyle(0xff0000, 1);
+        enemyHandRect.fillStyle(0xff0000, 0.2);
         enemyHandRect.fillRect(this.enemy.handArea.x, this.enemy.handArea.y, this.scale.width, this.enemy.handArea.height);
 
         let enemyCardRect = this.add.graphics();
-        enemyCardRect.fillStyle(0xffa500, 1);
+        enemyCardRect.fillStyle(0xffa500, 0.4);
         enemyCardRect.fillRect(this.enemy.cardArea.x, this.enemy.cardArea.y, this.scale.width, this.enemy.cardArea.height);
     }
 

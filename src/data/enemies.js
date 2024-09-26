@@ -47,7 +47,7 @@ export const enemies = [
         ]
     },
     {
-        "fullname": "deadline",
+        "fullname": "deadline panic",
         "id":6,
         "skills": [
             {

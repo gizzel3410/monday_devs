@@ -1,79 +1,118 @@
-
 export class DevCard extends Phaser.GameObjects.Container {
     constructor(scene, x, y, cardData, scale = 1) {
         super(scene, x, y);
-        // Add card background (rectangle)
-        this.height = 300
-        this.width = 200
-        this.scale = scale
+
+        this.height = 300;
+        this.width = 200;
+        this.scale = scale;
+
         const background = scene.add.image(0, 0, 'card_bk');
         background.setDisplaySize(this.width, this.height); // Resize the image to fit the card
 
         const backgroundBorder = scene.add.graphics();
-        backgroundBorder.lineStyle(1, 0x808080);  // 4px thick gray border (hex code for gray is #808080)
+        backgroundBorder.lineStyle(1, 0x808080);  // Gray border
         backgroundBorder.strokeRoundedRect(
-             - this.width / 2,   // Adjust x position to fit border
-            - this.height / 2,   // Adjust y position to fit border
-            this.width,                 // Width of the border
-            this.height,                 // Height of the border
-            10                        // Radius for rounded corners
+            -this.width / 2,
+            -this.height / 2,
+            this.width,
+            this.height,
+            10
         );
-        // background.scale = this.scale
-        // backgroundBorder.scale = this.scale
-        this.add(background); // Add background to the container
-        this.add(backgroundBorder); // Add background to the container
 
+        this.add(background);
+        this.add(backgroundBorder);
 
-        // Add developer's name
+        // Developer's name
         const nameText = scene.add.text(0, -this.height / 2 + 20, cardData.fullname, {
             fontSize: '18px',
             fill: '#000',
+            align: 'center',
             wordWrap: {width: 10},
-            align: 'center'
         });
+        nameText.x = -nameText.width / 2;
+        this.add(nameText);
 
-        nameText.x = -nameText.width / 2
-        this.add(nameText); // Add name text to the container
-
-// Add the preloaded image as the card's image
+        // Developer's image
         let img_size = this.width - 50;
-        console.log(img_size);
         let img_y = -(this.height / 2 - img_size / 2) + nameText.height + 22;
         const image = scene.add.image(0, img_y, 'dev_' + cardData.id);
-        image.setDisplaySize(img_size, img_size); // Resize the image to fit the card
+        image.setDisplaySize(img_size, img_size);
 
-// Add gray rounded border around the image
         const imageBorder = scene.add.graphics();
-        imageBorder.lineStyle(1, 0x808080);  // 4px thick gray border (hex code for gray is #808080)
+        imageBorder.lineStyle(1, 0x808080);
         imageBorder.strokeRoundedRect(
-            image.x - img_size / 2,   // Adjust x position to fit border
-            image.y - img_size / 2,   // Adjust y position to fit border
-            img_size,                 // Width of the border
-            img_size,                 // Height of the border
-            10                        // Radius for rounded corners
+            image.x - img_size / 2,
+            image.y - img_size / 2,
+            img_size,
+            img_size,
+            10
         );
 
-// Add border first to be behind the image
         this.add(image);
         this.add(imageBorder);
 
-        // Add up to 3 skills if they exist
+        // Skills
         const skills = Array.isArray(cardData.skills) ? cardData.skills.slice(0, 3) : [];
-        let skills_y = image.y + img_size / 2 + 5
+        let skills_y = image.y + img_size / 2 + 5;
         skills.forEach((skill, index) => {
-            const skillText = scene.add.text(- this.width/2 + 30, skills_y + index * 16, `${skill.name}`, {
+            const skillText = scene.add.text(-this.width / 2 + 30, skills_y + index * 16, `${skill.name}`, {
                 fontSize: '12px',
                 fill: '#000'
             });
-            this.add(skillText); // Add each skill text to the container
+            this.add(skillText);
         });
+
+        // Store the background and image for tint effect
+        this.background = background;
+        this.image = image;
 
         // Make the container interactive
         this.setSize(this.width, this.height);
-        this.setInteractive(new Phaser.Geom.Rectangle(0, -0, this.width, this.height), Phaser.Geom.Rectangle.Contains);
+        this.setInteractive(new Phaser.Geom.Rectangle(0, 0, this.width, this.height), Phaser.Geom.Rectangle.Contains);
 
         // Enable dragging for the card
         scene.input.setDraggable(this);
-        scene.add.existing(this); // Add this card to the scene
+        scene.add.existing(this);
+
+        // Add events for drag start and drag end
+        scene.input.on('dragstart', (pointer, gameObject) => {
+            if (gameObject === this) {
+                this.onDragStart();
+            }
+        });
+
+        scene.input.on('dragend', (pointer, gameObject) => {
+            if (gameObject === this) {
+                this.onDragEnd();
+            }
+        });
+    }
+
+    // Shake and light up when picked up
+    onDragStart() {
+        // Light up (tint) effect
+        this.background.setTint(0xFFFF99);  // Yellowish tint for light effect
+        this.image.setTint(0xFFFF99);       // Apply tint to the image
+
+        // Shake effect (using tweens)
+        this.scene.tweens.add({
+            targets: this,
+            angle: { from: -1, to: 1 },  // Shake by rotating
+            duration: 50,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1 // Repeat infinitely while dragging
+        });
+    }
+
+    // Reset the card when drag ends
+    onDragEnd() {
+        // Reset tint
+        this.background.clearTint();
+        this.image.clearTint();
+
+        // Stop shaking
+        this.scene.tweens.killTweensOf(this);  // Kill any active tweens on this object
+        this.setAngle(0);  // Reset angle to 0
     }
 }
