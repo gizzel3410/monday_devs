@@ -1,7 +1,8 @@
 import { Boot } from './scenes/Boot';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
-import {CardGameScene} from "./scenes/CardGameScene";
+import { CardGameScene } from "./scenes/CardGameScene";
+import { CardFace } from "./objects/CardFace";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -19,7 +20,10 @@ const config = {
         Boot,
         Preloader,
         MainMenu,
-        CardGameScene
+        CardGameScene,
+    ],
+    object: [
+        CardFace,
     ]
 };
 
