@@ -1,10 +1,11 @@
 
 export class DevCard extends Phaser.GameObjects.Container {
-    constructor(scene, x, y, cardData) {
+    constructor(scene, x, y, cardData, scale = 1) {
         super(scene, x, y);
         // Add card background (rectangle)
         this.height = 300
         this.width = 200
+        this.scale = scale
         const background = scene.add.image(0, 0, 'card_bk');
         background.setDisplaySize(this.width, this.height); // Resize the image to fit the card
 
@@ -17,6 +18,8 @@ export class DevCard extends Phaser.GameObjects.Container {
             this.height,                 // Height of the border
             10                        // Radius for rounded corners
         );
+        // background.scale = this.scale
+        // backgroundBorder.scale = this.scale
         this.add(background); // Add background to the container
         this.add(backgroundBorder); // Add background to the container
 
@@ -66,8 +69,8 @@ export class DevCard extends Phaser.GameObjects.Container {
         });
 
         // Make the container interactive
-        this.setSize(200, 300);
-        this.setInteractive(new Phaser.Geom.Rectangle(-100, -150, 200, 300), Phaser.Geom.Rectangle.Contains);
+        this.setSize(this.width, this.height);
+        this.setInteractive(new Phaser.Geom.Rectangle(0, -0, this.width, this.height), Phaser.Geom.Rectangle.Contains);
 
         // Enable dragging for the card
         scene.input.setDraggable(this);

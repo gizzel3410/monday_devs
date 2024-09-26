@@ -20,7 +20,7 @@ export const enemies = [
     },
 
     {
-        "fullname": "API 404",
+        "fullname": "API error-404",
         "id": 3,
         "skills": [
             {
@@ -38,7 +38,7 @@ export const enemies = [
         ]
     },
     {
-        "fullname": "stack overflow",
+        "fullname": "Stack overflow",
         "id": 5,
         "skills": [
             {

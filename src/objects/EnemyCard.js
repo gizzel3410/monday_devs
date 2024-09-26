@@ -1,10 +1,11 @@
 
 export class EnemyCard extends Phaser.GameObjects.Container {
-    constructor(scene, x, y, cardData) {
+    constructor(scene, x, y, cardData, scale = 1) {
         super(scene, x, y);
         // Add card background (rectangle)
         this.height = 300
         this.width = 200
+        this.scale = scale
         const background = scene.add.image(0, 0, 'card_bk');
         background.setDisplaySize(this.width, this.height); // Resize the image to fit the card
 
@@ -53,7 +54,7 @@ export class EnemyCard extends Phaser.GameObjects.Container {
 
 // Add gray rounded border around the image
         const imageBorder = scene.add.graphics();
-        imageBorder.lineStyle(1, 0x808080);  // 4px thick gray border (hex code for gray is #808080)
+        imageBorder.lineStyle(3, 0xFF0000);  // 4px thick gray border (hex code for gray is #808080)
         imageBorder.strokeRoundedRect(
             image.x - img_size / 2,   // Adjust x position to fit border
             image.y - img_size / 2,   // Adjust y position to fit border
@@ -78,8 +79,8 @@ export class EnemyCard extends Phaser.GameObjects.Container {
         });
 
         // Make the container interactive
-        this.setSize(200, 300);
-        this.setInteractive(new Phaser.Geom.Rectangle(-100, -150, 200, 300), Phaser.Geom.Rectangle.Contains);
+        this.setSize(this.width, this.height);
+        this.setInteractive(new Phaser.Geom.Rectangle(0, -0, this.width, this.height), Phaser.Geom.Rectangle.Contains);
 
         // Enable dragging for the card
         scene.input.setDraggable(this);

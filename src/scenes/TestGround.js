@@ -69,7 +69,7 @@ export class TestGround extends Phaser.Scene {
 
     addCardToHand(cardData) {
         // Create a new card object using the Card class
-        const card = new DevCard(this, 300 + this.hand.length * 160, 600, cardData);
+        const card = new DevCard(this, 300 + this.hand.length * 160, 600, cardData, 0.8);
 
         // Store card data in hand array for future reference
         this.hand.push(card);
