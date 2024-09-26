@@ -4,6 +4,13 @@ export class CardGameScene extends Phaser.Scene {
     }
 
     cardSize = {w: 150, h: 175}
+    maxLife = 3
+
+    // Update the text when the player's life changes (optional example)
+    update() {
+        this.playerLifeText.setText(`Life: ${this.player.life} / ${this.maxLife}`);
+        this.enemyLifeText.setText(`Life: ${this.enemy.life} / ${this.maxLife}`);
+    }
 
     create() {
 
@@ -28,6 +35,24 @@ export class CardGameScene extends Phaser.Scene {
             handArea: {x: 0, y: 0, height: 150},
             cardArea: {x: 0, y: 200, height: 150}
         }
+
+        // Create a text object to display the player's life
+        this.playerLifeText = this.add.text(0, this.player.handArea.y - 45, `Life: ${this.player.life} / ${this.maxLife}`, {
+            fontSize: '32px',
+            fill: '#090808'
+        });
+
+        // Set the depth of the text to a high value to ensure it's always on top
+        this.playerLifeText.setDepth(100);
+
+        // Create a text object to display the player's life
+        this.enemyLifeText = this.add.text(0, this.enemy.handArea.y + 150, `Life: ${this.player.life} / ${this.maxLife}`, {
+            fontSize: '32px',
+            fill: '#090808'
+        });
+
+        // Set the depth of the text to a high value to ensure it's always on top
+        this.enemyLifeText.setDepth(100);
 
         this.drawBoard()
 
@@ -101,7 +126,7 @@ export class CardGameScene extends Phaser.Scene {
         }
     }
 
-    discardHand(owner){
+    discardHand(owner) {
         console.log('discardHand')
         while (owner.board.length > 0) {
             const container = owner.board[0];        // Get the first item
