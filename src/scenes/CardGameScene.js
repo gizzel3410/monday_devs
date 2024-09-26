@@ -1,5 +1,5 @@
 import {devs} from '../data/devs'; // Import the devs constant
-import {CardFace} from '../objects/CardFace'; // Import the Card class
+import {DevCard} from "../objects/DevCard"; // Import the Card class
 
 export class CardGameScene extends Phaser.Scene {
 
@@ -166,7 +166,7 @@ export class CardGameScene extends Phaser.Scene {
         const card = owner.pool.pop();
         console.log(card)
         // const container = this.add.container(100 + owner.hand.length * 160, owner.handArea.y + 100);
-        const container = new CardFace(this, 100 + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData);
+        const container = new DevCard(this, 100 + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData, 0.75);
 
         // let cardObject = {}
         // if (card.cardData) {
