@@ -842,4 +842,84 @@ export const devs = [
         "imgUrl": "https://cdn1.cinodestatic.net/_images/1475/cd/82/cd820878-df03-4871-96b2-fc01fe66b1cb.jpeg",
         "skills": []
     },
+    {
+        "fullname": "Hans Reinikainen",
+        "id": 25259,
+        "imgUrl": "https://cdn1.cinodestatic.net/_images/default/user-unknown.png",
+        "skills": []
+    },
+    {
+        "fullname": "Eva Norring",
+        "id": 25314,
+        "imgUrl": "https://cdn1.cinodestatic.net/_images/1475/da/67/da679d6f-2043-4e81-88d9-72ea3b20f244.png",
+        "skills": [
+            {
+                "level": 0,
+                "name": "Förvaltningsledning"
+            },
+            {
+                "level": 0,
+                "name": "Projektledning"
+            },
+            {
+                "level": 0,
+                "name": "Tillverkande industri"
+            }
+        ]
+    },
+    {
+        "fullname": "Susanne Stigenberg",
+        "id": 25323,
+        "imgUrl": "https://cdn1.cinodestatic.net/_images/1475/17/5d/175d2da9-a21f-4914-a932-d14c7bff537d.png",
+        "skills": [
+            {
+                "level": 5,
+                "name": "PTEMP (Production Test Equipment Maintenance Process)"
+            },
+            {
+                "level": 5,
+                "name": "IT"
+            },
+            {
+                "level": 5,
+                "name": "Microsoft Office"
+            },
+            {
+                "level": 5,
+                "name": "PROPS"
+            },
+            {
+                "level": 5,
+                "name": "Project Manager"
+            }
+        ]
+    },
+    {
+        "fullname": "Belinda Nilsson",
+        "id": 116349,
+        "imgUrl": "https://cdn1.cinodestatic.net/_images/1475/c8/fc/c8fcd8df-b932-45d6-94af-28e47c07e483.png",
+        "skills": [
+            {
+                "level": 2,
+                "name": "Angular"
+            },
+            {
+                "level": 2,
+                "name": "TypeScript"
+            },
+            {
+                "level": 2,
+                "name": "C#"
+            },
+            {
+                "level": 2,
+                "name": "HTML5/CSS3/JS"
+            },
+            {
+                "level": 2,
+                "name": ".NET 8.0"
+            }
+        ]
+    },
+
 ]

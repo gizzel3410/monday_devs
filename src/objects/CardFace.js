@@ -26,7 +26,7 @@ export class CardFace extends Phaser.GameObjects.Container {
         const nameText = scene.add.text(0, -this.height / 2 + 20, cardData.fullname, {
             fontSize: '18px',
             fill: '#000',
-            wordWrap: {width: 100},
+            wordWrap: {width: 10},
             align: 'center'
         });
 

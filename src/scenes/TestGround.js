@@ -3,7 +3,7 @@ import {CardFace} from '../objects/CardFace'; // Import the Card class
 
 export class TestGround extends Phaser.Scene {
     constructor() {
-        super({key: 'CardGameScene'});
+        super({key: 'TestGround'});
     }
 
     preload() {
@@ -12,7 +12,7 @@ export class TestGround extends Phaser.Scene {
         //     this.load.image(`dev-image-${dev.id}`, dev.imgUrl);
         // });
 
-        devs.slice(0,20).forEach(dev => {
+        devs.forEach(dev => {
             this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
         });
         this.load.image('bild', 'assets/dev_img.png')
@@ -26,7 +26,7 @@ export class TestGround extends Phaser.Scene {
         this.handLimit = 5;  // Set hand limit
 
         // Populate pool with developers' data
-        devs.slice(0,6).forEach(dev => {
+        devs.forEach(dev => {
             console.log(dev)
             this.pool.push(dev);
         });
