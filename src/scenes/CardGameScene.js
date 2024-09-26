@@ -32,6 +32,8 @@ export class CardGameScene extends Phaser.Scene {
 
     create() {
 
+
+
         this.xOffset = (this.scale.width / 3);
 
         this.player = {
