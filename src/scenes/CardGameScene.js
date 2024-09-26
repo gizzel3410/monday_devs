@@ -10,6 +10,8 @@ export class CardGameScene extends Phaser.Scene {
         super({key: 'CardGameScene'});
     }
 
+    nextDepth = 100
+
     preload() {
         devs.forEach(dev => {
             this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
@@ -113,6 +115,8 @@ export class CardGameScene extends Phaser.Scene {
             // gameObject.list[0].setFillStyle(0x00ff00); // Change color instead of using setTint
             gameObject.oldX = gameObject.x;
             gameObject.oldY = gameObject.y;
+            gameObject.setDepth(this.nextDepth);
+            this.nextDepth++ // Optionally reset depth when dragging ends
         });
 
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
@@ -142,8 +146,8 @@ export class CardGameScene extends Phaser.Scene {
                 gameObject.y = gameObject.oldY;
             }
 
-
         });
+
     }
 
     drawCards(count) {
@@ -214,7 +218,7 @@ export class CardGameScene extends Phaser.Scene {
 
     drawBoard() {
         let playerHandRect = this.add.graphics();
-        playerHandRect.fillStyle(0x0000ff,  0.2); // 0x0000ff is the color code for blue, 1 is full opacity
+        playerHandRect.fillStyle(0x0000ff, 0.2); // 0x0000ff is the color code for blue, 1 is full opacity
         playerHandRect.fillRect(this.player.handArea.x, this.player.handArea.y, this.scale.width, this.player.handArea.height);
 
         let playerCardRect = this.add.graphics();
