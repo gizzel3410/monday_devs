@@ -6,6 +6,7 @@ export class DevCard extends Phaser.GameObjects.Container {
         this.width = 200;
         this.scale = scale;
 
+        // Add the card background
         const background = scene.add.image(0, 0, 'card_bk');
         background.setDisplaySize(this.width, this.height); // Resize the image to fit the card
 
@@ -27,7 +28,7 @@ export class DevCard extends Phaser.GameObjects.Container {
             fontSize: '18px',
             fill: '#000',
             align: 'center',
-            wordWrap: {width: 10},
+            wordWrap: { width: this.width - 20 },
         });
         nameText.x = -nameText.width / 2;
         this.add(nameText);
@@ -74,6 +75,10 @@ export class DevCard extends Phaser.GameObjects.Container {
         scene.input.setDraggable(this);
         scene.add.existing(this);
 
+        // Add hover effect
+        this.on('pointerover', this.onPointerOver, this);
+        this.on('pointerout', this.onPointerOut, this);
+
         // Add events for drag start and drag end
         scene.input.on('dragstart', (pointer, gameObject) => {
             if (gameObject === this) {
@@ -88,9 +93,23 @@ export class DevCard extends Phaser.GameObjects.Container {
         });
     }
 
+    // Hover over effect (make the card "shine")
+    onPointerOver() {
+        // Slightly increase brightness (lighter tint)
+        this.background.setTint(0xFFFFAA);  // Lighter tint
+        this.image.setTint(0xFFFFAA);       // Apply tint to the image
+    }
+
+    // Hover out effect (reset the tint)
+    onPointerOut() {
+        // Reset the tint back to normal
+        this.background.clearTint();
+        this.image.clearTint();
+    }
+
     // Shake and light up when picked up
     onDragStart() {
-        // Light up (tint) effect
+        // Light up (tint) effect when dragging starts
         this.background.setTint(0xFFFF99);  // Yellowish tint for light effect
         this.image.setTint(0xFFFF99);       // Apply tint to the image
 
