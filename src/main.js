@@ -4,6 +4,7 @@ import { Preloader } from './scenes/Preloader';
 import { CardGameScene } from "./scenes/CardGameScene";
 import { DevCard } from "./objects/DevCard";
 import {TestGround} from "./scenes/TestGround";
+import {GameOver} from "./scenes/GameOver";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -22,7 +23,8 @@ const config = {
         Preloader,
         MainMenu,
         CardGameScene,
-        TestGround
+        TestGround,
+        GameOver
     ],
     object: [
         DevCard,
