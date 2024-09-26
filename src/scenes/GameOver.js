@@ -14,8 +14,8 @@ export class GameOver extends Scene
     create ()
     {
         // Create a text object to display the player's life
-        this.playerLifeText = this.add.text(0, 0, `Winner is: ${this.winner}`, {
-            fontSize: '32px',
+        this.playerLifeText = this.add.text(100, 100, `Winner is: ${this.winner}`, {
+            fontSize: '322px',
             fill: '#090808'
         });
 

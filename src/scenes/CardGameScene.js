@@ -1,5 +1,7 @@
 import {devs} from '../data/devs'; // Import the devs constant
-import {DevCard} from "../objects/DevCard"; // Import the Card class
+import {DevCard} from "../objects/DevCard";
+import {enemies} from "../data/enemies";
+import {EnemyCard} from "../objects/EnemyCard"; // Import the Card class
 
 export class CardGameScene extends Phaser.Scene {
 
@@ -12,6 +14,9 @@ export class CardGameScene extends Phaser.Scene {
         devs.forEach(dev => {
             this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
         });
+        enemies.forEach(enemy => {
+            this.load.image('enemy_' + enemy.id, 'assets/enemies/' + enemy.id + '.png')
+        })
         this.load.image('bild', 'assets/dev_img.png')
         this.load.image('card_bk', 'assets/card_bk.png')
     }
@@ -27,6 +32,8 @@ export class CardGameScene extends Phaser.Scene {
 
     create() {
 
+        this.xOffset = (this.scale.width / 3);
+
         this.player = {
             interactable: true,
             life: this.maxLife,
@@ -34,8 +41,8 @@ export class CardGameScene extends Phaser.Scene {
             pool: [],
             board: [],
             discard: [],
-            handArea: {x: 0, y: this.scale.height - 150, height: 150, cardYOffset: 0 },
-            cardArea: {x: 0, y: this.scale.height - 350, height: 150}
+            handArea: {x: 0, y: this.scale.height - 150, height: 150, cardYOffset: 25},
+            cardArea: {x: 0, y: this.scale.height - 450, height: 150}
         }
 
         this.enemy = {
@@ -45,8 +52,8 @@ export class CardGameScene extends Phaser.Scene {
             pool: [],
             board: [],
             discard: [],
-            handArea: {x: 0, y: 0, height: 150, cardYOffset: 150},
-            cardArea: {x: 0, y: 200, height: 150}
+            handArea: {x: 0, y: 0, height: 150, cardYOffset: 125},
+            cardArea: {x: 0, y: 300, height: 150}
         }
 
         // Create a text object to display the player's life
@@ -71,6 +78,8 @@ export class CardGameScene extends Phaser.Scene {
 
         for (let i = 0; i < devs.length; i++) {
             const dev = devs[i];
+            const enemy = enemies[Math.floor(Math.random() * enemies.length)]
+            console.log(enemy)
             // console.log(dev)
             this.player.pool.push({
                 id: i,
@@ -81,7 +90,7 @@ export class CardGameScene extends Phaser.Scene {
             this.enemy.pool.push({
                 id: i,
                 color: Phaser.Display.Color.RandomRGB(),
-                cardData: dev,
+                cardData: enemy,
                 damage: Math.floor(Math.random() * 10) + 1
             });
         }
@@ -115,8 +124,8 @@ export class CardGameScene extends Phaser.Scene {
                 const index = this.player.hand.findIndex(card => card.card.id === gameObject.card.id);
                 const cardObject = this.player.hand.splice(index, 1)[0];
 
-                cardObject.x = 100 + this.player.board.length * 160;
-                cardObject.y = this.player.cardArea.y + 50;
+                cardObject.x = this.xOffset + this.player.board.length * 160;
+                cardObject.y = this.player.cardArea.y + 100;
 
                 this.player.board.push(cardObject);
 
@@ -142,7 +151,7 @@ export class CardGameScene extends Phaser.Scene {
     reDrawHand(owner) {
         for (let i = 0; i < owner.hand.length; i++) {
             const card = owner.hand[i];
-            card.x = 100 + i * 160;
+            card.x = this.xOffset + i * 160;
         }
     }
 
@@ -163,26 +172,26 @@ export class CardGameScene extends Phaser.Scene {
     }
 
     addCardToHand(owner) {
+        console.log('addCardToHand')
         const card = owner.pool.pop();
-        console.log(card)
-        // const container = this.add.container(100 + owner.hand.length * 160, owner.handArea.y + 100);
-        const container = new DevCard(this, 100 + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData, 0.75);
 
-        // let cardObject = {}
-        // if (card.cardData) {
-        //     cardObject = new CardFace(this, 300 + owner.hand.length * 160, 600, card.cardData);
-        // } else {
-        //     cardObject = this.add.rectangle(0, 0, this.cardSize.w, this.cardSize.h, card.color.color);
-        // }
+        let container = {}
 
+        if (owner.interactable === true) {
+            container = new DevCard(this, this.xOffset + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData, 0.75);
+        } else {
+            container = new EnemyCard(this, this.xOffset + owner.hand.length * 160, owner.handArea.y + owner.handArea.cardYOffset, card.cardData, 0.75);
+        }
 
-        const numberText = this.add.text(0, 0, `${card.damage}`, {
+        const numberText = this.add.text(25, 100, `${card.damage}`, {
             fontSize: '32px',
             fill: '#090808',
             align: 'center'
         });
 
-        // container.add(cardObject);
+        // Set the stroke (thickness) and its color (here, black with thickness 4)
+        numberText.setStroke('#000', 4);
+
         container.add(numberText);
         container.setSize(this.cardSize.w, this.cardSize.h);
 
@@ -261,7 +270,7 @@ export class CardGameScene extends Phaser.Scene {
     enemyMove() {
         console.log('enemy move!')
         const cardObject = this.enemy.hand.pop()
-        cardObject.x = 100 + this.enemy.board.length * 160;
+        cardObject.x = this.xOffset + this.enemy.board.length * 160;
         cardObject.y = this.enemy.cardArea.y + 75;
         this.enemy.board.push(cardObject)
     }
