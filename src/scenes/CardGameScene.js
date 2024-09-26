@@ -1,50 +1,73 @@
+import {devs} from '../data/devs'; // Import the devs constant
+import {DevCard} from '../objects/DevCard'; // Import the Card class
+
 export class CardGameScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'CardGameScene' });
+        super({key: 'CardGameScene'});
+    }
+
+    preload() {
+        // Preload images for the developers
+        // devs.forEach(dev => {
+        //     this.load.image(`dev-image-${dev.id}`, dev.imgUrl);
+        // });
+
+        devs.slice(0,20).forEach(dev => {
+            this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
+        });
+        this.load.image('bild', 'assets/dev_img.png')
+        this.load.image('card_bk', 'assets/card_bk.png')
     }
 
     create() {
         this.hand = [];
         this.pool = [];
         this.board = [];
+        this.handLimit = 5;  // Set hand limit
 
-        // Fill pool with some cards
-        for (let i = 0; i < 10; i++) {
-            this.pool.push({ id: i, color: Phaser.Display.Color.RandomRGB() });
-        }
+        // Populate pool with developers' data
+        devs.slice(0,6).forEach(dev => {
+            console.log(dev)
+            this.pool.push(dev);
+        });
 
         // Draw initial hand of 5 cards
         this.drawCards(5);
 
         // Add Drag Events
-        this.input.on('dragstart', (pointer, gameObject) => {
-            gameObject.setFillStyle(0x00ff00); // Change color instead of using setTint
-        });
-
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
             gameObject.y = dragY;
         });
 
         this.input.on('dragend', (pointer, gameObject) => {
-            gameObject.setFillStyle(0xffffff); // Reset to original color
+            // Handle card drop logic here
         });
     }
 
     drawCards(count) {
         for (let i = 0; i < count; i++) {
-            if (this.hand.length < 5 && this.pool.length > 0) {
-                const card = this.pool.pop();
-                this.addCardToHand(card);
+            if (this.hand.length < this.handLimit && this.pool.length > 0) {
+                this.pool = shuffleArray(this.pool)
+                const cardData = this.pool.pop(); // Get a developer from the pool
+                this.addCardToHand(cardData); // Add the card to the hand
             }
         }
     }
 
-    addCardToHand(card) {
-        const cardSprite = this.add.rectangle(100 + this.hand.length * 160, 600, 150, 250, card.color.color);
-        cardSprite.setInteractive();  // Make the card interactive
-        this.input.setDraggable(cardSprite);  // Enable dragging for this card
+    addCardToHand(cardData) {
+        // Create a new card object using the Card class
+        const card = new CardFace(this, 300 + this.hand.length * 160, 600, cardData);
 
+        // Store card data in hand array for future reference
         this.hand.push(card);
     }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
 }

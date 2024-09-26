@@ -2,7 +2,7 @@ import { Boot } from './scenes/Boot';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { CardGameScene } from "./scenes/CardGameScene";
-import { CardFace } from "./objects/CardFace";
+import { DevCard } from "./objects/DevCard";
 import {TestGround} from "./scenes/TestGround";
 
 //  Find out more information about the Game Config at:
@@ -25,7 +25,7 @@ const config = {
         TestGround
     ],
     object: [
-        CardFace,
+        DevCard,
     ]
 };
 
