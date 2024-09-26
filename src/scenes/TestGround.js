@@ -1,5 +1,7 @@
 import {devs} from '../data/devs'; // Import the devs constant
-import {CardFace} from '../objects/CardFace'; // Import the Card class
+import {enemies} from '../data/enemies'; // Import the devs constant
+import {DevCard} from '../objects/DevCard';
+import {EnemyCard} from "../objects/EnemyCard"; // Import the Card class
 
 export class TestGround extends Phaser.Scene {
     constructor() {
@@ -15,25 +17,38 @@ export class TestGround extends Phaser.Scene {
         devs.forEach(dev => {
             this.load.image('dev_' + dev.id, 'assets/devs/' + dev.id + '.png')
         });
-        this.load.image('bild', 'assets/dev_img.png')
+        enemies.forEach(enemy => {
+            this.load.image('enemy_' + enemy.id, 'assets/enemies/' + enemy.id + '.png')
+        });
         this.load.image('card_bk', 'assets/card_bk.png')
+        this.load.image('bg', 'assets/bg.png')
     }
 
     create() {
+        this.enemyHand = [];
+        this.enemyPool = [];
         this.hand = [];
         this.pool = [];
         this.board = [];
         this.handLimit = 5;  // Set hand limit
 
+        const background = this.add.image(0 ,0, 'bg').setOrigin(0,0)
+        background.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
         // Populate pool with developers' data
         devs.forEach(dev => {
-            console.log(dev)
             this.pool.push(dev);
+        });
+        enemies.forEach(dev => {
+            this.enemyPool.push(dev);
         });
 
         // Draw initial hand of 5 cards
         this.drawCards(5);
 
+        for (let i = 0; i < this.enemyPool.length; i++) {
+            const card = new EnemyCard(this, 300 + i * 160, 200, enemies[i]);
+            }
         // Add Drag Events
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
@@ -57,7 +72,7 @@ export class TestGround extends Phaser.Scene {
 
     addCardToHand(cardData) {
         // Create a new card object using the Card class
-        const card = new CardFace(this, 300 + this.hand.length * 160, 600, cardData);
+        const card = new DevCard(this, 300 + this.hand.length * 160, 600, cardData, 0.8);
 
         // Store card data in hand array for future reference
         this.hand.push(card);

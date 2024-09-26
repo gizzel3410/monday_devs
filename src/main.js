@@ -2,8 +2,9 @@ import { Boot } from './scenes/Boot';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { CardGameScene } from "./scenes/CardGameScene";
-import { CardFace } from "./objects/CardFace";
+import { DevCard } from "./objects/DevCard";
 import {TestGround} from "./scenes/TestGround";
+import {GameOver} from "./scenes/GameOver";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -14,7 +15,7 @@ const config = {
     parent: 'game-container',
     backgroundColor: '#d3d3d3',
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [
@@ -22,10 +23,11 @@ const config = {
         Preloader,
         MainMenu,
         CardGameScene,
-        TestGround
+        TestGround,
+        GameOver
     ],
     object: [
-        CardFace,
+        DevCard,
     ]
 };
 

@@ -41,7 +41,7 @@ export const devs = [
             },
             {
                 "level": 4,
-                "name": "Behavior Driven Development (BDD)"
+                "name": "BDD"
             },
             {
                 "level": 4,
@@ -91,7 +91,7 @@ export const devs = [
             },
             {
                 "level": 4,
-                "name": "Microsoft Visual Studio"
+                "name": "MS Visual Studio"
             },
             {
                 "level": 4,
@@ -126,7 +126,7 @@ export const devs = [
             },
             {
                 "level": 5,
-                "name": "Microsoft Visual Studio"
+                "name": "MS Visual Studio"
             },
             {
                 "level": 5,
@@ -172,7 +172,7 @@ export const devs = [
             },
             {
                 "level": 0,
-                "name": "Microsoft Visual Studio"
+                "name": "MS Visual Studio"
             },
             {
                 "level": 0,
@@ -330,7 +330,7 @@ export const devs = [
         "skills": [
             {
                 "level": 5,
-                "name": "Offentlig förvaltning och försvar"
+                "name": "Offentlig förvaltning"
             },
             {
                 "level": 5,
@@ -631,7 +631,7 @@ export const devs = [
             },
             {
                 "level": 0,
-                "name": "Microsoft Visual Studio"
+                "name": "MS Visual Studio"
             },
             {
                 "level": 0,
@@ -658,7 +658,7 @@ export const devs = [
             },
             {
                 "level": 4,
-                "name": "Microsoft Visual Studio"
+                "name": "MS Visual Studio"
             },
             {
                 "level": 4,
@@ -724,7 +724,7 @@ export const devs = [
             },
             {
                 "level": 3,
-                "name": "JetBrains Intellij IDEA"
+                "name": "JetBrains Intellij"
             }
         ]
     },
@@ -739,7 +739,7 @@ export const devs = [
             },
             {
                 "level": 4,
-                "name": "Microsoft Windows Operating Systems"
+                "name": "MS Windows"
             },
             {
                 "level": 4,
@@ -805,7 +805,7 @@ export const devs = [
             },
             {
                 "level": 3,
-                "name": "Agil systemutveckling"
+                "name": "Agil dev"
             }
         ]
     },
@@ -874,7 +874,7 @@ export const devs = [
         "skills": [
             {
                 "level": 5,
-                "name": "PTEMP (Production Test Equipment Maintenance Process)"
+                "name": "PTEMP"
             },
             {
                 "level": 5,
